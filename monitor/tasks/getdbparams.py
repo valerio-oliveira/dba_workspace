@@ -1,15 +1,16 @@
 import os
+from util.globals import *
 
 
-def getDbParams(file, dir_ansible):
-    dir = dir_ansible + 'roles/scan_dbparams/files/'
+def GetDbParams(file):
+    dir_files = dir.ANSIBLE + 'roles/scan_dbparams/files/'
     dictDbs = {}
-    if os.path.exists(dir+file):
-        dictDbs = dbParam2Dict(dir+file)
+    if os.path.exists(dir_files+file):
+        dictDbs = __dbParam2Dict(dir_files+file)
     return dictDbs
 
 
-def dbParam2Dict(filename):
+def __dbParam2Dict(filename):
     ret_list = {}
     with open(filename) as file:
         for line in file:
