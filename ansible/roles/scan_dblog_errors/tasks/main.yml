@@ -1,0 +1,25 @@
+---
+- name: Get logs directory
+  become: yes
+  # become_user: postgres
+  command: psql -U postgres -t -c "select d.setting||'/'||l.setting||'/' from pg_settings d, pg_settings l where d.name ='data_directory' and l.name = 'log_directory';"
+  register: dir_logs
+
+- name: List log files
+  become: yes
+  # become_user: postgres
+  shell: "ls -1rt {{ dir_logs.stdout }} | tail -n{{ log_file_pos }} | head -n1"
+  # shell: "ls -1rt {{ dir_logs.stdout }} | tail -n1 | head -n1"
+  register: last_log
+
+- name: Cat log
+  become: yes
+  # become_user: postgres
+  shell: 'echo -e "{{ last_log.stdout }} $(du -hd1 {{ dir_logs.stdout }})" ; cat -n {{ dir_logs.stdout }}/{{ last_log.stdout }} |  grep "FATAL:\|ERROR:\|PANIC:" | grep -v "DataGrip\|DBeaver"' # | tail -n200
+  register: command_output
+
+- name: Save settings
+  delegate_to: localhost
+  copy:
+    content: "{{command_output.stdout}}"
+    dest: "roles/scan_dblog_errors/files/log5432_{{ ansible_hostname }}.txt"

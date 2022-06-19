@@ -1,0 +1,9 @@
+collector_go/
+__pycache__
+*.csv
+*.txt
+ansible/inventories
+ansible/ansible.*
+monitor/tasks/runner.py
+monitor/test.py
+monitor/util/bot_globals.py

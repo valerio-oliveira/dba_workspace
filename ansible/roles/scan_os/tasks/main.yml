@@ -1,0 +1,9 @@
+---
+- name: get all facts {{ inventory_hostname }}
+  delegate_to: localhost
+  vars:
+    msg: |
+      facts: {{ ansible_facts }}
+  template:
+    src: "roles/scan_os/templates/my_facts2.j2"
+    dest: "roles/scan_os/files/hw_{{ ansible_hostname }}.txt"

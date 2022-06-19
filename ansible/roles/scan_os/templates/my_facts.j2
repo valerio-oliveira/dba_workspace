@@ -1,0 +1,19 @@
+{% for k, v in vars['ansible_facts'].items() %}
+{% if v is string %}{{ k }} = {{ v }}
+{% elif (v is mapping) and (v|length > 0) %}{{ k }} = {
+{%   for j,l in v.items() %}
+{%     if (l is mapping) and (l|length > 0)  %}    {{ j }} = {
+{%       for m,n in l.items() %}        {{ m }} = {{ n }},
+{%       endfor %}    },
+{%     else %}    {{ j }} = {{ l }},
+{%     endif     %}
+{%   endfor %}
+}
+{% elif (v is sequence) and (v|length > 0) %}{{ k }} = [
+{%   for n in v %}    {{ n }},
+{%   endfor %}
+]
+{% else %}
+{{ k }} = {{ v }}
+{% endif     %}
+{% endfor %}

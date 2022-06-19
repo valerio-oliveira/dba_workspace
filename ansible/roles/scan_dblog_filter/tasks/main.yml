@@ -1,0 +1,32 @@
+---
+- name: Get logs directory
+  become: yes
+  command: psql -U postgres -t -c "select d.setting||'/'||l.setting||'/' from pg_settings d, pg_settings l where d.name ='data_directory' and l.name = 'log_directory';"
+  register: dir_logs
+
+- name: sed log
+  become: yes
+  # shell: "sed -n {{ item.line | int }},{{ (item.line | int) + 40 }}p {{ dir_logs.stdout }}/{{ log_file }}"
+  shell: 'echo -e "{{ item.seq }};"; sed -n {{ item.line | int }},{{ (item.line | int) + 40 }}p {{ dir_logs.stdout }}/{{ log_file }}'
+  loop: "{{ list_lines }}"
+  register: command_output
+
+# - name: Count results
+#   debug:
+#     msg: "Count: {{ command_output.results | length }}"
+
+# - name: Count items
+#   debug:
+#     msg: "Item: {{ item.stdout.split(';')[0] }}"
+#   loop: "{{ command_output.results }}"
+
+- name: Save settings
+  delegate_to: localhost
+  copy:
+    content: "{{ item.stdout }}"
+    dest: "roles/scan_dblog_filter/files/fil5432_{{ host_name }}_{{ item.stdout.split(';')[0] }}.txt"
+  loop: "{{ command_output.results }}"
+
+- name: End task
+  debug:
+    msg: "End of transmition"

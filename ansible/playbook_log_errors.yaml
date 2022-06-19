@@ -1,0 +1,6 @@
+---
+- hosts: prod_main
+  remote_user: valerio
+  gather_facts: yes
+  roles:
+    - scan_dblog_errors

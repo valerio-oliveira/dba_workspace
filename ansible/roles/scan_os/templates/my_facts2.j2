@@ -1,0 +1,3 @@
+{% for k, v in vars['ansible_facts'].items() %}
+{{ k }} = {{ v }}
+{% endfor %}
