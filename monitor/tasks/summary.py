@@ -30,9 +30,9 @@ class summary:
         dictLog = summary.__sort_by_index_value(dictLog, reverse=True)
         return dictLog
 
-    def getBotSummary(msg_bot=None):
+    def getBotSummary(msg_bot=None, host=''):
         hosts_summary = summary.GetHostsSummary()
-        terminal.ShowBotSummary(hosts_summary, msg_bot=msg_bot)
+        terminal.ShowBotSummary(hosts_summary, msg_bot=msg_bot, host=host)
 
     def GetHostsSummary():
         hosts_summary = []

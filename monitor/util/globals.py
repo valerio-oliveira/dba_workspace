@@ -98,6 +98,17 @@ class col:
     E = '\033[0m'
 
 
+class emoji:
+    ENGINE = '\U00002699'
+    MAGNIFIER = '\U0001F50E'
+    REPORT = '\U0001F4C4'
+    WARNING = '\U000026A0'
+    ERROR = '\U0000274C'
+    SUCCESS = '\U00002705'
+    INFO = '\U00002139'
+    QUESTION = '\U00002753'
+
+
 def Processing(witem, pos, message, direction, msg_bot):
     if msg_bot:
         return witem, pos, direction
