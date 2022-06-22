@@ -99,20 +99,29 @@ class col:
 
 
 class emoji:
+    ASTERISK = '\U00002733'
+    BACK = '\U0001F519'
+    BANNER = '\U0001F530'
+    CANCEL = '\U0000274C'
+    CANCEL_BTN = '\U0000274E'
+    CHECK_BTN = '\U00002705'
+    DIZZY = '\U0001F4AB'
     ENGINE = '\U00002699'
-    MAGNIFIER = '\U0001F50E'
-    REPORT = '\U0001F4C4'
-    WARNING = '\U000026A0'
-    ERROR = '\U0000274C'
-    SUCCESS = '\U00002705'
     INFO = '\U00002139'
+    MAGNIFIER = '\U0001F50E'
+    NOTEBOOK = '\U0001F4D3'
     QUESTION = '\U00002753'
+    RECICLE = '\U0001F5D1'
+    RELOAD = '\U0001F501'
+    REPORT = '\U0001F4C4'
+    ROBOT = '\U0001F916'
+    RUN_BTN = '\U000025B6'
+    TRAY = '\U0001F4E5'
+    SUN = '\U0001F505'
+    WARNING = '\U000026A0'
 
 
-def Processing(witem, pos, message, direction, msg_bot):
-    if msg_bot:
-        return witem, pos, direction
-
+def Processing(witem, pos, message, direction):
     printEnd = '\r'
     limmit = scr.BAR_WIDTH-len(message)
     waiting = ['┗(◔◡◔)┓', '┏(◔◡◔)┓', '┏(◔◡◔)┛', '┗(◔◡◔)┛']

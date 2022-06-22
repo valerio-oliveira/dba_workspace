@@ -34,7 +34,7 @@ class summary:
         hosts_summary = summary.GetHostsSummary()
         terminal.ShowBotSummary(hosts_summary, msg_bot=msg_bot, host=host)
 
-    def GetHostsSummary():
+    def GetHostsSummary(host_name: str = '', get_loglist: bool = True):
         hosts_summary = []
         for host in GetFacts():
             machine_id = host[0]
@@ -46,15 +46,17 @@ class summary:
             facts = host[5]
             dbParams = host[6]
             dbLogs = host[7]
-            listLogSummary = summary.__getDictLogSummary(dbLogs)
             log_line = []
-            seq = 0
-            for key, value in listLogSummary:
-                seq += 1
-                log_line.append(([seq, key, ]+value))
+            if get_loglist:
+                listLogSummary = summary.__getDictLogSummary(dbLogs)
+                seq = 0
+                for key, value in listLogSummary:
+                    seq += 1
+                    log_line.append(([seq, key, ]+value))
 
-            hosts_summary.append(
-                [hostname, address, log_file, log_size, log_dir, log_line])
+            if host_name == '' or host_name == hostname:
+                hosts_summary.append(
+                    [hostname, address, log_file, log_size, log_dir, log_line])
         return tuple(hosts_summary)
 
     def GetSummaryDetails(hosts_summary) -> dict:

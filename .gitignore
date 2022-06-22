@@ -2,6 +2,7 @@ collector_go/
 __pycache__
 *.csv
 *.txt
+*.pdf
 ansible/inventories
 ansible/ansible.*
 monitor/tasks/runner.py
