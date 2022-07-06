@@ -1,15 +1,11 @@
 import os
-# import threading
-# import time
-# import schedule
-from tasks.collector import *
-from tasks.summary import *
+from src.ansible.AnsibleCollector import AnsibleCollector, CollectorType
+from src.classes.MessageGroup import MessageGroup
+from src.processing.HostSummaryDetails import HostSummaryDetails
+from src.processing.HostSummary import HostSummary
 from tasks.terminal import *
 from util.globals import *
 from util.playsound import *
-# from util.multithread import run_continuously
-
-# os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 
 def jobs_collect_report(link: str = ''):
@@ -17,29 +13,58 @@ def jobs_collect_report(link: str = ''):
     scr.DisableCursor()
     scr.PrintHeader()
 
-    collector.RunCollector(
-        # runSO=True,
-        # runDbParams=True,
-        # runDbLogs=True,
-        setLogPos=1,
-    )
-    hosts_summary = summary.GetHostsSummary()
-    terminal.ShowSummary(hosts_summary)
+    collector = AnsibleCollector(type=CollectorType.SO)
+    collector.collect()
+    collector.set(type=CollectorType.DB_PARAMS)
+    collector.collect()
+    extra_vars = {"log_file_pos": 1}
+    collector.set(type=CollectorType.DB_LOG_ERRORS,
+                  extra_vars=extra_vars)
+    collector.collect()
+    del collector
 
-    # scr.PrintSeparator()
+    hosts_summary = HostSummary()
+    hosts_summary.process()
+    summary = hosts_summary.get()
 
+    terminal.ShowSummary(summary)
+
+    scr.PrintSeparator()
+
+    # print('SetClearSummaryFiles')
     # summary.SetClearSummaryFiles()
+    # print('RunDetailCollector')
     # collector.RunDetailCollector(
     #     hosts_summary=hosts_summary,
     # )
 
-    # summary_details = summary.GetSummaryDetails(hosts_summary)
+    # print('GetSummaryDetails')
+    host_summary_details = HostSummaryDetails()
+    host_summary_details.process(summary)
+    summary_details = host_summary_details.summary_details
 
-    # print(summary_details)
-    # terminal.ShowSummaryDetails(summary_details)
-
+    # {
+    #     "file_num": file_num,
+    #     "date_time": date_time,
+    #     "db": db,
+    #     "user": user,
+    #     "app": app,
+    #     "client": client,
+    #     "err_list": err_list
+    # }
     scr.PrintFooter()
     snd.Beep()
+
+    groups = MessageGroup.list
+    # messages = {}
+    for g in groups:
+        if groups[g]['active']:
+            for item in summary_details:
+                if item['db'] in groups[g]['databases']:
+                    print('---> ', g, item['file_num'],
+                          item['db'], 'users', groups[g]['telegram'])
+
+    # terminal.ShowSummaryDetails(summary_details)
 
 
 # def run_threaded(task):

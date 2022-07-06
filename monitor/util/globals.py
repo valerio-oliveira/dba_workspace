@@ -7,6 +7,7 @@ class dir:
     UTIL = os.path.dirname(__file__) + '/'
     WORKSPACE = os.path.abspath(UTIL + '/../..') + '/'
     ANSIBLE = WORKSPACE + 'ansible/'
+    SRC_TG = WORKSPACE + 'monitor/src/telegram/'
 
 
 class scr:
@@ -96,29 +97,6 @@ class col:
     D = '\033[2m'
     #-- END
     E = '\033[0m'
-
-
-class emoji:
-    ASTERISK = '\U00002733'
-    BACK = '\U0001F519'
-    BANNER = '\U0001F530'
-    CANCEL = '\U0000274C'
-    CANCEL_BTN = '\U0000274E'
-    CHECK_BTN = '\U00002705'
-    DIZZY = '\U0001F4AB'
-    ENGINE = '\U00002699'
-    INFO = '\U00002139'
-    MAGNIFIER = '\U0001F50E'
-    NOTEBOOK = '\U0001F4D3'
-    QUESTION = '\U00002753'
-    RECICLE = '\U0001F5D1'
-    RELOAD = '\U0001F501'
-    REPORT = '\U0001F4C4'
-    ROBOT = '\U0001F916'
-    RUN_BTN = '\U000025B6'
-    TRAY = '\U0001F4E5'
-    SUN = '\U0001F505'
-    WARNING = '\U000026A0'
 
 
 def Processing(witem, pos, message, direction):
